@@ -1,0 +1,54 @@
+require('dotenv').config()
+const db = require('../models');
+const bcrypt=require('bcryptjs');
+const jwt= require('jsonwebtoken');
+const nodemailer = require("nodemailer");
+
+module.exports ={
+    async register(req,res) {
+    var transporter=nodemailer.createTransport({
+       service:'gmail' ,
+       auth:{
+           user:'kamsudylane@gmail.com',
+           pass:process.env.PASSWORD
+       },
+       tls:{
+           rejectUnauthorized:false
+       }
+    })
+    const salt = await bcrypt.genSalt(12);
+    var user = {
+       firstName : req.body.firstName,
+       lastName : req.body.lastName,
+       email : req.body.email,
+       password : await bcrypt.hash(req.body.password, salt)
+       };
+              
+       created_user = db.User.create(user);
+
+       const token=jwt.sign(user,process.env.JWT_SECRET,{expiresIn:'20m'})
+       const data = {
+       from: 'verify your email <kamsudylane@gmail.com>',
+       to: user.email,
+       subject: 'Account Activation Link',
+       html:`
+       <h2>Hello ${user.lastName}!</h2>Please click on the link below to activate your account</h2><br>
+       <a href="${process.env.CLIENT_URL}/users/activate">
+       ${process.env.CLIENT_URL}/authentication/activate/${token}</a>`
+        };
+       transporter.sendMail(data,function(saveErr,info) {
+           if(saveErr) {
+            return res.status(412).send({
+                success: false,
+                message: saveErr
+            })
+           }
+           else{
+            return res.status(200).json({
+                success: true,
+                message: "Your account has been successfully saved and email has been sent on your account"
+            });
+           }
+       })
+    }       
+}
