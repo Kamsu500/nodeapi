@@ -3,24 +3,24 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     queryInterface.addConstraint('Taches',{
-      fields: ['userId '],
+      fields: ['id_user'],
       type: 'foreign Key',
       name:"tache_user",
       references:{
         table:'Users',
-        field:'userId'
+        field:'id'
       }
     });
   },
 
   async down (queryInterface, Sequelize) {
-    queryInterface.removeConstraint('Tache',{
-      fields: ['userId '],
+    queryInterface.removeConstraint('Taches',{
+      fields: ['id_user'],
       type: 'foreign Key',
       name:"tache_user",
       references:{
         table:'Users',
-        field:'userId'
+        field:'id'
       }
     })
   }

@@ -2,9 +2,10 @@
 
  const router =express.Router();
 
- const {register} =require('../controllers/registerController')
- const validationMiddleware = require('../middlewares/middleware');
+ const registerController =require('../controllers/registerController');
+ const validationMiddleware = require('../middlewares/middlewareValidation');
 
- router.post('/register',validationMiddleware.signup,register);
+ router.post('/register',validationMiddleware.signup,registerController.register);
+ router.get('/users',registerController.getUsers)
 
  module.exports = router

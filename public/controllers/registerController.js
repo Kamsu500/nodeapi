@@ -6,6 +6,11 @@ const nodemailer = require("nodemailer");
 
 module.exports ={
     async register(req,res) {
+
+    const emailExists = await db.User.findOne({ where: { email: req.body.email } });
+    if (emailExists) {
+        res.status(412).json({message:"Email already registered"})
+    }    
     var transporter=nodemailer.createTransport({
        service:'gmail' ,
        auth:{
@@ -50,5 +55,17 @@ module.exports ={
             });
            }
        })
-    }       
+    },
+    
+    async getUsers(req,res){
+       
+        try {
+            
+            const users= await db.User.findAll()
+            return res.status(200).json(users);
+            
+        } catch (error) {
+            return res.status(500).json({error:'une erreur s\'est produite'})
+        }
+    }
 }

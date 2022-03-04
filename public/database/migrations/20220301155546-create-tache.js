@@ -2,7 +2,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Taches', {
-      id: {
+      id_tache: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -14,7 +14,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING(191)
       },
-      userId: {
+      id_user: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
