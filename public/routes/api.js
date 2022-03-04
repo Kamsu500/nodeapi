@@ -6,6 +6,7 @@
  const validationMiddleware = require('../middlewares/middlewareValidation');
 
  router.post('/register',validationMiddleware.signup,registerController.register);
- router.get('/users',registerController.getUsers)
+ router.get('/users',registerController.getUsers);
+ router.get('/user/:id',registerController.getUserById)
 
  module.exports = router
