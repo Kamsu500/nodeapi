@@ -7,6 +7,7 @@
 
  router.post('/register',validationMiddleware.signup,registerController.register);
  router.get('/users',registerController.getUsers);
- router.get('/user/:id',registerController.getUserById)
+ router.get('/user/:id',registerController.getUserById);
+ router.get('/authentication/activate/:token',registerController.verifyEmail);
 
  module.exports = router

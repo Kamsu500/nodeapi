@@ -5,6 +5,7 @@ const jwt= require('jsonwebtoken');
 const nodemailer = require("nodemailer");
 
 module.exports ={
+
     async register(req,res) {
 
     const emailExists = await db.User.findOne({ where: { email: req.body.email } });
@@ -31,15 +32,13 @@ module.exports ={
               
        created_user = db.User.create(user);
 
-       const token=jwt.sign(user,process.env.JWT_SECRET,{expiresIn:'20m'})
+       const token=jwt.sign(user,process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
        const data = {
        from: 'verify your email <kamsudylane@gmail.com>',
        to: user.email,
        subject: 'Account Activation Link',
-       html:`
-       <h2>Hello ${user.lastName}!</h2>Please click on the link below to activate your account</h2><br>
-       <a href="${process.env.CLIENT_URL}/users/activate">
-       ${process.env.CLIENT_URL}/authentication/activate/${token}</a>`
+       html:`<h2>Hello ${user.lastName}!</h2>Please click on the link below to activate your account</h2><br>
+       <a href="${process.env.CLIENT_URL}/authentication/activate/${token}">${process.env.CLIENT_URL}/authentication/activate/${token}</a>`
         };
        transporter.sendMail(data,function(saveErr,info) {
            if(saveErr) {
@@ -76,10 +75,34 @@ module.exports ={
         try {
             
             const user= await db.User.findOne({ where:{ id }})
-            return res.status(200).json(user);
+
+            if(user){
+
+                return res.status(200).json(user);
+            }
+                return res.status(412).json({message:'This user does not exist'})
             
         } catch (error) {
             return res.status(500).json({error:'une erreur s\'est produite'})
         }
+    },
+
+    async verifyEmail(req,res) {
+         
+        const token= req.params.token
+        
+        jwt.verify(token,process.env.JWT_SECRET_KEY,function(err,decoded) {
+
+            if(err){
+                console.log(err);
+                res.status(500).json({messgae:'error expired link'})
+            }
+
+            const confirmed=db.User.update({ confirmed:true });
+
+            if(confirmed){
+                res.status(200).json({message:'success'})
+            }
+        })
     }
 }
