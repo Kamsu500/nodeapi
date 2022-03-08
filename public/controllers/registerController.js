@@ -3,6 +3,7 @@ const db = require('../models');
 const bcrypt=require('bcryptjs');
 const jwt= require('jsonwebtoken');
 const nodemailer = require("nodemailer");
+const user = require('../models/user');
 
 module.exports ={
 
@@ -38,7 +39,7 @@ module.exports ={
        to: user.email,
        subject: 'Account Activation Link',
        html:`<h2>Hello ${user.lastName}!</h2>Please click on the link below to activate your account</h2><br>
-       <a href="${process.env.CLIENT_URL}/authentication/activate/${token}">${process.env.CLIENT_URL}/authentication/activate/${token}</a>`
+       <a href="${process.env.URL}/authentication/activate/${token}">${process.env.URL}/authentication/activate/${token}</a>`
         };
        transporter.sendMail(data,function(saveErr,info) {
            if(saveErr) {
@@ -91,18 +92,24 @@ module.exports ={
          
         const token= req.params.token
         
-        jwt.verify(token,process.env.JWT_SECRET_KEY,function(err,decoded) {
+            jwt.verify(token,process.env.JWT_SECRET_KEY,async function(err,verifiedJwt) {
 
             if(err){
                 console.log(err);
-                res.status(500).json({messgae:'error expired link'})
+                res.status(500).json({messge:'expired link'})
             }
+            else{
+              const user=await db.User.findOne({where:{confirmed:false}})
 
-            const confirmed=db.User.update({ confirmed:true });
-
-            if(confirmed){
-                res.status(200).json({message:'success'})
-            }
+                 if(user){
+                     user.confirmed=true;
+                     user.save();
+                     res.status(200).json({messge:'Your email has been verified successfully'});
+                 }
+                 else{
+                     res.status(404).json({messge:'Your email has been already verified'})
+                 }
+              }
         })
     }
 }
