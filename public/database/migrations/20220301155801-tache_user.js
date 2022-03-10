@@ -9,7 +9,9 @@ module.exports = {
       references:{
         table:'Users',
         field:'id'
-      }
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
     });
   },
 
@@ -21,7 +23,9 @@ module.exports = {
       references:{
         table:'Users',
         field:'id'
-      }
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
     })
   }
 };

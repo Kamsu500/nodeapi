@@ -9,5 +9,6 @@
  router.get('/users',registerController.getUsers);
  router.get('/user/:id',registerController.getUserById);
  router.get('/authentication/activate/:token',registerController.verifyEmail);
+ router.delete('/user/delete/:id',registerController.deleteUser);
 
  module.exports = router
