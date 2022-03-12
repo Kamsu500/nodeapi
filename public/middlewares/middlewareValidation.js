@@ -21,6 +21,26 @@ const signup = (req, res, next) => {
     });
 }
 
+const auth = (req, res, next) => {
+    const validationRule = {
+        "email": "required|email",
+        "password": "required|string|min:8|strict",
+    }
+    validator(req.body, validationRule, {}, (err, status) => {
+        if (!status) {
+            res.status(412)
+                .send({
+                    success: false,
+                    message: 'Validation failed',
+                    data: err
+                });
+        } else {
+            next();
+        }
+    });
+}
+
 module.exports = { 
+  auth,  
   signup
 }
