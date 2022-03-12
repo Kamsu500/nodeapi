@@ -32,13 +32,13 @@ module.exports = {
                 
         created_user = db.User.create(user);
 
-        const token=jwt.sign(user,process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
+        const token=jwt.sign(user.email,process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
         const data = {
         from: 'verify your email <kamsudylane@gmail.com>',
         to: user.email,
         subject: 'Account Activation Link',
         html:`<h2>Hello ${user.lastName}!</h2>Please click on the link below to activate your account</h2><br>
-        <a href="${process.env.URL}/authentication/activate/${token}">${process.env.URL}/authentication/activate/${token}</a>`
+        <a href="${process.env.URL}/api/authentication/activate/${token}">${process.env.URL}/api/authentication/activate/${token}</a>`
             };
         transporter.sendMail(data,function(saveErr,info) {
             if(saveErr) {
@@ -56,7 +56,7 @@ module.exports = {
         })
     },
     
-    async getUsers(req,res){
+    async getUsers(req,res) {
        
         try {
             
@@ -93,7 +93,7 @@ module.exports = {
          
             const token = req.params.token
         
-            jwt.verify(token,process.env.JWT_SECRET_KEY,async function(err,verifiedJwt) {
+            jwt.verify(token,process.env.JWT_SECRET_KEY,async function(err,payload) {
 
             if(err){
                 console.log(err);
@@ -101,23 +101,23 @@ module.exports = {
             }
             else
             {
-            const user = await db.User.findOne({where:{confirmed:false}});
+            const user = await db.User.findOne({where:{email:payload.email,confirmed:false}});
 
-                    if(user)
-                    {
-                        user.confirmed=true;
-                        await user.save();
-                        res.status(200).json({messge:'Your email has been verified successfully'});
-                    }
-                    else
-                    {
-                        res.status(404).json({messge:'Your email has been already verified'});
-                    }
+                if(user)
+                {
+                    user.confirmed=true;
+                    await user.save();
+                    res.status(200).json({messge:'Your email has been verified successfully'});
+                }
+                else
+                {
+                    res.status(404).json({messge:'Your email has been already verified'});
+                }
             }
         })
     },
 
-    async deleteUser(req, res){
+    async deleteUser(req, res) {
       
             const id=req.params.id
 

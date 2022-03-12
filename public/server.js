@@ -9,9 +9,11 @@ app.get('/', (req, res) => {
 
 app_routes=require('./routes/api');
 var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
 app.use(bodyParser.json())
 app.use('/api',app_routes);
 app.use(express.urlencoded({ extended: true} ));
+app.use(cookieParser());
 
 db_connection.authenticate().then(() => {
   console.log('Connection has been established successfully.');
