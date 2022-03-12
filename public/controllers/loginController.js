@@ -24,11 +24,11 @@ module.exports = {
         res.cookie('access_token',access_token,
                 {
                     maxAge:60*60*24*30*1000,
-                    httOnly:true
+                    httpOnly:true
                 });
         res.cookie('refresh_token',refresh_token,{
                     maxAge:60*60*24*30*1000,
-                    httOnly:true
+                    httpOnly:true
                 });
 
         return res.status(200).json({message:'you are authenticated'});
