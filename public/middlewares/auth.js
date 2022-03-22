@@ -1,3 +1,4 @@
+require('dotenv').config()
 const jwt= require('jsonwebtoken');
 
 const authenticateJWT = (req, res, next) => {
@@ -17,7 +18,7 @@ const authenticateJWT = (req, res, next) => {
     } else {
         res.sendStatus(401);
     }
-};
+}
 
 module.exports = { 
     authenticateJWT 

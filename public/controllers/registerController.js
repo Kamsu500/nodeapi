@@ -32,7 +32,7 @@ module.exports = {
                 
         created_user = db.User.create(user);
 
-        const token=jwt.sign(user.email,process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
+        const token=jwt.sign({email:user.email},process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
         const data = {
         from: 'verify your email <kamsudylane@gmail.com>',
         to: user.email,
