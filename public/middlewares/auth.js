@@ -9,14 +9,14 @@ const authenticateJWT = (req, res, next) => {
 
         jwt.verify(access_token, process.env.JWT_SECRET_KEY, (err, user) => {
             if (err) {
-                return res.sendStatus(403);
+                return res.status(403).json({message:'forbidden'});
             }
 
             req.user = user;
             next();
         });
     } else {
-        res.sendStatus(401);
+        res.status(401).json({message:'unauthorized'});
     }
 }
 
