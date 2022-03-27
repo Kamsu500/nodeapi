@@ -10,13 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Tache.belongsTo(models.User);
     }
   }
   Tache.init({
+    id_tache: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    id_user: DataTypes.INTEGER
+    userId: DataTypes.INTEGER.UNSIGNED
   }, {
     sequelize,
     modelName: 'Tache',

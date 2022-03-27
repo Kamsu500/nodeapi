@@ -30,7 +30,7 @@ module.exports = {
         password : await bcrypt.hash(req.body.password, salt)
         };
                 
-        created_user = db.User.create(user);
+        db.User.create(user);
 
         const token=jwt.sign({email:user.email},process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
         const data = {
