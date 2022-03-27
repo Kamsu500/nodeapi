@@ -11,7 +11,7 @@ module.exports = {
             }
           });
 
-        return res.status(200).json({tasks,message:'task with user associated'});
+        return res.status(200).json({tasks,message:'all tasks with users associated'});
     },
 
     async addTask(req,res) {
@@ -28,6 +28,9 @@ module.exports = {
 
             return res.status(200).json({message:'task has created successfully'});
         }
+        else
+        {
             return res.status(200).json({message:'this task does not created'});
+        }
     }
 }
