@@ -30,9 +30,9 @@ module.exports = {
         password : await bcrypt.hash(req.body.password, salt)
         };
                 
-        db.User.create(user);
+        await db.User.create(user);
 
-        const token=jwt.sign({email:user.email},process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
+        const token = jwt.sign({email:user.email},process.env.JWT_SECRET_KEY,{ algorithm:"HS256",expiresIn:'30m'})
         const data = {
         from: 'verify your email <kamsudylane@gmail.com>',
         to: user.email,
@@ -70,7 +70,7 @@ module.exports = {
 
     async getUserById(req,res) {
 
-            const id=req.params.id
+            const id = req.params.id
 
             try {
                 
@@ -105,7 +105,7 @@ module.exports = {
 
                 if(user)
                 {
-                    user.confirmed=true;
+                    user.confirmed = true;
                     await user.save();
                     res.status(200).json({messge:'Your email has been verified successfully'});
                 }
@@ -119,7 +119,7 @@ module.exports = {
 
     async deleteUser(req, res) {
       
-            const id=req.params.id
+            const id = req.params.id
 
             try 
             {

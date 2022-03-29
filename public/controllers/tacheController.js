@@ -15,6 +15,13 @@ module.exports = {
     },
 
     async addTask(req,res) {
+      
+        const user = await db.Tache.findOne({ where:{ userId:req.body.userId }});
+
+        if(user)
+        {
+            return res.status(200).json({message:'this task has been already affected at one user'});
+        }
 
         var tache = {
            name : req.body.name,
@@ -22,15 +29,13 @@ module.exports = {
            userId : req.body.userId
         }
 
-        created=db.Tache.create(tache);
+        const task = await db.Tache.create(tache);
 
-        if(created){
+        if(task)
 
-            return res.status(200).json({message:'task has created successfully'});
-        }
-        else
         {
-            return res.status(200).json({message:'this task does not created'});
+            return res.status(200).json({message:'task has created successfully'});
+
         }
     }
 }
