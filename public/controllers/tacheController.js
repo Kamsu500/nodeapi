@@ -15,6 +15,12 @@ module.exports = {
     },
 
     async addTask(req,res) {
+
+        var tache = {
+            name : req.body.name,
+            description : req.body.description,
+            userId : req.body.userId
+         }
       
         const user = await db.Tache.findOne({ where:{ userId:req.body.userId }});
 
@@ -23,19 +29,9 @@ module.exports = {
             return res.status(200).json({message:'this task has been already affected at one user'});
         }
 
-        var tache = {
-           name : req.body.name,
-           description : req.body.description,
-           userId : req.body.userId
-        }
+        await db.Tache.create(tache);
 
-        const task = await db.Tache.create(tache);
+        return res.status(200).json({message:'task has created successfully'});
 
-        if(task)
-
-        {
-            return res.status(200).json({message:'task has created successfully'});
-
-        }
     }
 }
