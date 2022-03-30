@@ -14,6 +14,6 @@
  router.delete('/user/delete/:id',registerController.deleteUser);
  router.post('/login',validationMiddleware.auth,loginController.auth);
  router.get('/tasks',taskController.displayTask);
- router.post('/addtask',taskController.addTask)
+ router.post('/addtask',taskController.addTask);
 
  module.exports = router

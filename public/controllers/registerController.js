@@ -5,7 +5,7 @@ const jwt= require('jsonwebtoken');
 const nodemailer = require("nodemailer");
 
 module.exports = {
-
+// create one user
     async register(req,res) {
 
         const emailExists = await db.User.findOne({ where: { email: req.body.email } });
@@ -55,7 +55,7 @@ module.exports = {
             }
         })
     },
-    
+// get all users    
     async getUsers(req,res) {
        
         try {
@@ -67,7 +67,7 @@ module.exports = {
             return res.status(500).json({error:'une erreur s\'est produite'});
         }
     },
-
+// get user by id 
     async getUserById(req,res) {
 
             const id = req.params.id
@@ -88,7 +88,7 @@ module.exports = {
                 return res.status(500).json({error:'une erreur s\'est produite'});
             }
     },
-
+// verification email by user
     async verifyEmail(req,res) {
          
             const token = req.params.token
@@ -107,32 +107,36 @@ module.exports = {
                 {
                     user.confirmed = true;
                     await user.save();
-                    res.status(200).json({messge:'Your email has been verified successfully'});
+                    return res.status(200).json({messge:'Your email has been verified successfully'});
                 }
                 else
                 {
-                    res.status(404).json({messge:'Your email has been already verified'});
+                    return res.status(404).json({messge:'Your email has been already verified'});
                 }
             }
         })
     },
-
+// delete user by id
     async deleteUser(req, res) {
       
             const id = req.params.id
 
             try 
             {
-                const user = await db.User.findById(id);
-                if(user)
+                const user = await db.User.findByPk(id);
+            
+                if(!user)
                 {
-                    await user.destroy();
-                    res.status(200).json({messge:'User has been deleted'});
+                    return res.status(404).json({messge:'this user does not exist'});
                 }
+                await user.destroy();
+
+                    return res.status(200).json({message:'this user has been deleted successfully'});
+
             } 
             catch (error) 
             {
-                return res.status(500).json({error:'une erreur s\'est produite'});
+                  return res.status(503).json({error:'this user does not deleted'});
             }
 
     }

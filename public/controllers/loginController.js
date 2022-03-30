@@ -5,8 +5,8 @@ const jwt= require('jsonwebtoken');
 
 module.exports = {
 
-    async auth(req, res) {
-
+    async auth(req,res) {
+// login
         const { email, password } = req.body;
         const user = await db.User.findOne({where:{email: req.body.email}});
     
@@ -38,5 +38,18 @@ module.exports = {
         return res.status(200).json({message:'you are authenticated'});
         } 
      })
+    },
+// logout
+    async logout(req,res){
+
+
+    },
+// forgot your password
+    async forgotPassword(req,res){
+
+    },
+// reset your password
+    async resetPassword(req,res){
+
     }
 }
