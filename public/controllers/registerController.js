@@ -162,7 +162,7 @@ module.exports = {
             } 
             catch (error) 
             {
-                return res.status(503).json({error:'this user does not deleted'});
+                return res.status(503).json({error:'this user does not updated'});
             }
 
     }
