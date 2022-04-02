@@ -15,5 +15,6 @@
  router.post('/login',validationMiddleware.auth,loginController.auth);
  router.get('/tasks',taskController.displayTask);
  router.post('/addtask',taskController.addTask);
+ router.put('/user/update/:id',validationMiddleware.update,registerController.updateUser);
 
  module.exports = router

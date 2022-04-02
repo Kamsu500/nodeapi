@@ -131,12 +131,38 @@ module.exports = {
                 }
                 await user.destroy();
 
-                    return res.status(200).json({message:'this user has been deleted successfully'});
+                return res.status(200).json({message:'this user has been deleted successfully'});
 
             } 
             catch (error) 
             {
-                  return res.status(503).json({error:'this user does not deleted'});
+                return res.status(503).json({error:'this user does not deleted'});
+            }
+
+    },
+// update user by id
+    async updateUser(req,res) {
+
+        const id = req.params.id
+
+            try 
+            {
+                const user = await db.User.findByPk(id);
+            
+                if(!user)
+                {
+                    return res.status(404).json({messge:'this user does not exist'});
+                }
+                await user.update({firstName:req.body.firstName,lastName:req.body.lastName})
+
+                await user.save();
+
+                return res.status(200).json({message:'this user has been updated successfully'});
+
+            } 
+            catch (error) 
+            {
+                return res.status(503).json({error:'this user does not deleted'});
             }
 
     }
