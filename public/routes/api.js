@@ -3,7 +3,7 @@
  const router =express.Router();
 
  const registerController = require('../controllers/registerController');
- const taskController=require('../controllers/tacheController');
+ const taskController = require('../controllers/tacheController');
  const loginController = require('../controllers/loginController');
  const validationMiddleware = require('../middlewares/middlewareValidation');
 

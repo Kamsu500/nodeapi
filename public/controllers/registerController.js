@@ -153,7 +153,9 @@ module.exports = {
                 {
                     return res.status(404).json({messge:'this user does not exist'});
                 }
-                await user.update({firstName:req.body.firstName,lastName:req.body.lastName})
+                const salt = await bcrypt.genSalt(12);
+                const password = await bcrypt.hash(req.body.password, salt)
+                await user.update({firstName:req.body.firstName,lastName:req.body.lastName,password:password})
 
                 await user.save();
 

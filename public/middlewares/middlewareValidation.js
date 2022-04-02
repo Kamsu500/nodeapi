@@ -25,6 +25,7 @@ const update = (req, res, next) => {
     const validationRule = {
         "firstName": "required|string",
         "lastName": "required|string",
+        "password": "required|string|min:8|strict"
     }
     validator(req.body, validationRule, {}, (err, status) => {
         if (!status) {
