@@ -10,11 +10,15 @@ module.exports = {
         const { email, password } = req.body;
         const user = await db.User.findOne({where:{email: req.body.email}});
     
-        if(!user) return res.status(404).json({message:'user does not exist or email has been not verified'});
+        if(!user) return res.status(404).json({message:'user does not exist'});
         const dbPassword=user.password;
+        if(user.confirmed==false)
+        {
+            return res.status(412).json({message:'please verify your account before login'});
+        }
         bcrypt.compare(password, dbPassword).then((matches) => {
         if(!matches){
-            return res.status(404).json({message:'password does not match'});
+            return res.status(404).json({message:'login failed'});
         }
         else
         {
