@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Tache);
-      User.belongsTo(models.Role,{foreignKey:'RoleId',onDelete:'CASCADE',onUpdate:'CASCADE'});
+      // User.belongsTo(models.Role,{foreignKey:'RoleId',onDelete:'CASCADE',onUpdate:'CASCADE'});
     }
   }
   User.init({
