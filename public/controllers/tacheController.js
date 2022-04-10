@@ -32,5 +32,16 @@ module.exports = {
         await db.Tache.create(tache);
 
         return res.status(200).json({message:'task has created successfully'});
-    }
+    },
+// update task
+    async updateTask(req,res)
+    {
+
+    },
+
+// deleteTask
+   async deleteTask(req,res)
+   {
+
+   }
 }
